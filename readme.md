@@ -3,7 +3,7 @@ To download:
 git clone https://github.com/ajhyperbit/Twitch-Title-Change.git
 ```
 
-If you need to install python, you can install it from the Microsoft store:
+If you need to install python, you can install it from the Microsoft store if you are on Windows:
 Instructions here:
 https://realpython.com/installing-python/#windows-how-to-install-python-from-the-microsoft-store
 
