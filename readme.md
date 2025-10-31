@@ -1,6 +1,6 @@
 To download:
 ```
-git clone 
+git clone https://github.com/ajhyperbit/Twitch-Title-Change.git
 ```
 
 If you need to install python, you can install it from the Microsoft store:
