@@ -1,6 +1,6 @@
 To download:
 ```
-git clone https://github.com/ajhyperbit/Twitch-Title-Change.git
+git clone https://github.com/ajhyperbit/Twitch-Projects.git?ref=395a0db439f72523cf2ad4f8f0eaaa7ff30dec6b
 ```
 
 If you need to install python, you can install it from the Microsoft store if you are on Windows:
@@ -22,3 +22,5 @@ That should populate a twitch_token.json within the same directory
 
 Some of these instructions are repeated in .envexample
 But there are more instructions in there too
+
+P.S. I personally use NixOS, which is why shell.nix and .envrc exist. Those two files can be safely ignored if you are not making use of Nix
