@@ -13,7 +13,7 @@ def load_dotenv(filepath=".env"):
                 key, value = line.split("=", 1)
                 os.environ.setdefault(key, value)
     except FileNotFoundError:
-        print(f"⚠️ .env file '{filepath}' not found.")
+        print(f".env file '{filepath}' not found.")
 
 load_dotenv()
 
@@ -70,9 +70,9 @@ def update_title(channel_id: str, new_title: str):
     )
     
     if response.status_code == 204:
-        print("✅ Title updated successfully!")
+        print("Title updated successfully!")
     else:
-        print(f"❌ Failed to update title ({response.status_code}): {response.text}")
+        print(f"Failed to update title ({response.status_code}): {response.text}")
 
 def main():
     print("Fetching channel ID...")
