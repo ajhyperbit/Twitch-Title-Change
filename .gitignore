@@ -2,3 +2,4 @@ __pycache__
 .direnv
 .env
 twitch_token.json
+*.code-workspace
