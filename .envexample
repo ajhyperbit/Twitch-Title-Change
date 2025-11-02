@@ -38,6 +38,9 @@ Title1=SUBS = YOUR OWN DRAWN YOLK [!PP !WOOD !MILKIES !MOBILE ]
 #Number of subs you want to start with
 BASE_SUBS=5
 
+#Maximum number of subs you want to make the title change to
+MAX_SUBS=100
+
 #True or False
 LINEAR=True 
 

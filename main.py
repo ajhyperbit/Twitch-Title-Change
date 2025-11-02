@@ -21,6 +21,7 @@ load_dotenv()
 BROADCASTER_USERNAME = (os.getenv("BROADCASTER_USERNAME"))
 BASE_SUBS = int(os.getenv("BASE_SUBS"))
 UPDATE_INTERVAL_MINUTES = int(os.getenv("UPDATE_INTERVAL_MINUTES"))
+MAX_SUBS = os.getenv("MAX_SUBS")
 
 LINEAR = os.getenv("LINEAR")
 
@@ -89,8 +90,8 @@ def main():
         print(f"Waiting {UPDATE_INTERVAL_MINUTES} minutes before next update...")
         time.sleep(UPDATE_INTERVAL_MINUTES * 15)
         SUBS += subs_logic(SUBS)
-        if SUBS >= 100:
-            SUBS == 100
+        if SUBS >= MAX_SUBS:
+            SUBS == MAX_SUBS
             return
 
 if __name__ == "__main__":
