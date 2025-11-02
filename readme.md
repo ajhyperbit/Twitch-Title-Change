@@ -1,6 +1,6 @@
 To download:
 ```
-git clone https://github.com/ajhyperbit/Twitch-Projects.git?ref=395a0db439f72523cf2ad4f8f0eaaa7ff30dec6b
+git clone -b title-change-code --single-branch https://github.com/ajhyperbit/Twitch-Projects.git
 ```
 
 If you need to install python, you can install it from the Microsoft store if you are on Windows:
