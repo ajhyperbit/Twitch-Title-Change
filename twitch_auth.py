@@ -2,21 +2,10 @@ import os
 import json
 import requests
 from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
 
 TOKEN_FILE = "twitch_token.json"
 OAUTH_URL = "https://id.twitch.tv/oauth2/token"
-
-def load_dotenv(filepath=".env"):
-    try:
-        with open(filepath) as f:
-            for line in f:
-                line = line.strip()
-                if not line or line.startswith("#") or "=" not in line:
-                    continue
-                key, value = line.split("=", 1)
-                os.environ.setdefault(key, value)
-    except FileNotFoundError:
-        print(f"⚠️ .env file '{filepath}' not found.")
 
 load_dotenv()
 
@@ -32,12 +21,12 @@ def save_token(data: dict):
     """Write token data to disk."""
     with open(TOKEN_FILE, "w") as f:
         json.dump(data, f, indent=2)
-    log("💾 Token data saved to disk.")
+    log("Token data saved to disk.")
 
 def load_token() -> dict | None:
     """Read token data from disk."""
     if not os.path.exists(TOKEN_FILE):
-        log("⚠️ No token file found.")
+        log("No token file found.")
         return None
     with open(TOKEN_FILE, "r") as f:
         return json.load(f)
@@ -52,15 +41,15 @@ def refresh_token_if_needed() -> str:
     now = datetime.now(timezone.utc)
 
     # Display current expiration time
-    log(f"🕒 Current token expires at {expires_at.strftime('%Y-%m-%d %H:%M:%S UTC')}")
+    log(f"Current token expires at {expires_at.strftime('%Y-%m-%d %H:%M:%S UTC')}")
 
     if now < expires_at:
         minutes_left = int((expires_at - now).total_seconds() / 60)
-        log(f"✅ Token still valid ({minutes_left} min left).")
+        log(f"Token still valid ({minutes_left} min left).")
         return token_data["access_token"]
 
     # Otherwise, refresh
-    log("🔄 Token expired — attempting to refresh...")
+    log("Token expired — attempting to refresh...")
 
     refresh_resp = requests.post(
         OAUTH_URL,
@@ -73,7 +62,7 @@ def refresh_token_if_needed() -> str:
     )
 
     if refresh_resp.status_code != 200:
-        log(f"❌ Failed to refresh token: {refresh_resp.text}")
+        log(f"Failed to refresh token: {refresh_resp.text}")
         raise RuntimeError("Token refresh failed.")
 
     new_data = refresh_resp.json()
@@ -84,14 +73,22 @@ def refresh_token_if_needed() -> str:
     save_token(new_data)
 
     expires_display = datetime.fromisoformat(new_data["expires_at"]).strftime("%Y-%m-%d %H:%M:%S UTC")
-    log(f"✅ Token refreshed successfully. New expiration: {expires_display}")
+    log(f"Token refreshed successfully. New expiration: {expires_display}")
 
     return new_data["access_token"]
 
-def get_headers() -> dict:
+def get_headers(json_body: bool = False) -> dict:
     """Return headers for authenticated Twitch API requests."""
     access_token = refresh_token_if_needed()
-    return {
-        "Client-ID": CLIENT_ID,
-        "Authorization": f"Bearer {access_token}",
-    }
+    if json_body == True:
+        headers = {
+            "Client-ID": CLIENT_ID,
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+    else:
+        headers = {
+            "Client-ID": CLIENT_ID,
+            "Authorization": f"Bearer {access_token}",
+        }
+    return headers

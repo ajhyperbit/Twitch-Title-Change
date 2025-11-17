@@ -2,3 +2,6 @@ __pycache__
 .direnv
 .env
 twitch_token.json
+twitch_token*.json
+possible-projects.txt
+tempCodeRunnerFile.*

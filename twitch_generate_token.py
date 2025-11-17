@@ -6,29 +6,20 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime, timedelta, timezone
 import threading
-
-# ----------------------------
-# Load .env manually
-# ----------------------------
-def load_dotenv(filepath=".env"):
-    try:
-        with open(filepath) as f:
-            for line in f:
-                line = line.strip()
-                if not line or line.startswith("#") or "=" not in line:
-                    continue
-                key, value = line.split("=", 1)
-                os.environ.setdefault(key, value)
-    except FileNotFoundError:
-        print(f"⚠️ .env file '{filepath}' not found.")
+from twitch_functions import get_channel_id
+from dotenv import load_dotenv
 
 load_dotenv()
 
 CLIENT_ID = os.getenv("TWITCH_CLIENT_ID")
 CLIENT_SECRET = os.getenv("TWITCH_CLIENT_SECRET")
 
+BOT_USERNAME = (os.getenv("BOT_USERNAME"))
+
+user_id = get_channel_id(BOT_USERNAME)
+
 if not CLIENT_ID or not CLIENT_SECRET:
-    raise RuntimeError("❌ Missing TWITCH_CLIENT_ID or TWITCH_CLIENT_SECRET in .env or environment variables.")
+    raise RuntimeError("Missing TWITCH_CLIENT_ID or TWITCH_CLIENT_SECRET in .env or environment variables.")
 
 # ----------------------------
 # Configuration
@@ -37,7 +28,58 @@ PORT = 8090
 REDIRECT = "http://localhost"
 REDIRECT_URI = f"{REDIRECT}:{PORT}"  # Must match Twitch app
 SCOPES = [
-    "channel:manage:broadcast"
+    "bits:read",
+    "channel:bot",
+    "channel:manage:broadcast",
+    "channel:manage:clips",
+    "channel:read:goals",
+    "channel:read:hype_train",
+    "channel:read:polls",
+    "channel:manage:polls",
+    "channel:read:predictions",
+    "channel:manage:predictions",
+    "channel:manage:raids",
+    "channel:read:redemptions",
+    "channel:read:subscriptions",
+    "channel:read:vips",
+    "channel:moderate",
+    "moderation:read",
+    "moderator:manage:announcements",
+    "moderator:manage:automod",
+    "moderator:read:automod_settings",
+    "moderator:manage:automod_settings",
+    "moderator:read:banned_users",
+    "moderator:manage:banned_users",
+    "moderator:read:blocked_terms",
+    "moderator:read:chat_messages",
+    "moderator:manage:blocked_terms",
+    "moderator:manage:chat_messages",
+    "moderator:read:chat_settings",
+    "moderator:manage:chat_settings",
+    "moderator:read:chatters",
+    "moderator:read:followers",
+    "moderator:read:guest_star",
+    "moderator:read:moderators",
+    "moderator:read:shoutouts",
+    "moderator:manage:shoutouts",
+    "moderator:read:suspicious_users",
+    "moderator:read:unban_requests",
+    "moderator:manage:unban_requests",
+    "moderator:read:vips",
+    "moderator:read:warnings",
+    "moderator:manage:warnings",
+    "user:bot",
+    "user:edit",
+    "user:read:chat",
+    "user:manage:chat_color",
+    "user:read:emotes",
+    "user:read:follows",
+    "user:read:moderated_channels",
+    "user:read:subscriptions",
+    "user:read:whispers",
+    "user:manage:whispers",
+    "user:write:chat",
+    "whispers:read"
 ]
 TOKEN_FILE = "twitch_token.json"
 
@@ -77,7 +119,7 @@ class OAuthHandler(BaseHTTPRequestHandler):
             self.send_response(500)
             self.end_headers()
             self.wfile.write(b"Failed to exchange code for token.")
-            print("❌ Token exchange failed:", token_resp.text)
+            print("Token exchange failed:", token_resp.text)
             return
 
         data = token_resp.json()
@@ -88,13 +130,13 @@ class OAuthHandler(BaseHTTPRequestHandler):
         with open(TOKEN_FILE, "w") as f:
             json.dump(data, f, indent=2)
 
-        print(f"💾 Tokens saved to {TOKEN_FILE}")
+        print(f"Tokens saved to {TOKEN_FILE}")
 
         # Respond to browser
         self.send_response(200)
         self.end_headers()
         self.wfile.write(
-            "✅ Twitch token saved successfully! You can close this window.".encode("utf-8")
+            "Twitch token saved successfully! You can close this window.".encode("utf-8")
         )
 
         # Shutdown server in a separate thread to avoid blocking
