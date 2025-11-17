@@ -4,24 +4,27 @@ import aiohttp
 import asyncio
 import requests
 import websockets
-from twitch_auth import TwitchAuth
+from twitch_auth import get_headers
 
+#TWITCH_WS_URL = "wss://eventsub.wss.twitch.tv/ws"
 TWITCH_WS_URL = "wss://eventsub.wss.twitch.tv/ws"
 TWITCH_API_URL = "https://api.twitch.tv/helix/eventsub/subscriptions"
-BROADCASTER_USERNAME = os.getenv("BROADCASTER_USERNAME")
-BOT_USERNAME = os.getenv("BOT_USERNAME")
-
-auth = TwitchAuth()
+BROADCASTER_USERNAME = (os.getenv("BROADCASTER_USERNAME"))
+BOT_USERNAME = (os.getenv("BOT_USERNAME"))
 
 def get_channel_id(username: str) -> str:
     """Fetch the broadcaster's user ID (channel ID) from their username."""
-    headers = auth.get_headers()
+    headers = get_headers()
     params = {"login": username}
     response = requests.get("https://api.twitch.tv/helix/users", headers=headers, params=params)
-    response.raise_for_status()
+    
+    if response.status_code != 200:
+        raise RuntimeError(f"Failed to fetch user ID: {response.status_code} {response.text}")
+    
     data = response.json()
     if not data["data"]:
         raise ValueError(f"No user found with username '{username}'")
+    
     return data["data"][0]["id"]
 
 async def subscribe_event(session_id, event_type, condition, version=1):
@@ -36,7 +39,7 @@ async def subscribe_event(session_id, event_type, condition, version=1):
             }
         }
 
-        headers = auth.get_headers(json_body=True)
+        headers = get_headers(json_body=True)
 
         async with session.post(TWITCH_API_URL, headers=headers, json=payload) as resp:
             data = await resp.json()
@@ -64,20 +67,6 @@ async def twitch_listener():
                         "user_id": user_id
                     }
                 )
-                await subscribe_event(
-                    session_id,
-                    "channel.cheer",
-                    {
-                        "broadcaster_user_id": broadcaster_id,
-                    }
-                )
-                #await subscribe_event(
-                #    session_id,
-                #    "channel.bits.use",
-                #    {
-                #        "broadcaster_user_id": broadcaster_id,
-                #    }
-                #)
 
             elif mtype == "notification":
                 event_type = data["metadata"]["subscription_type"]
