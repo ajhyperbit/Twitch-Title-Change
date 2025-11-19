@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 import threading
 from twitch_functions import get_channel_id
 from dotenv import load_dotenv
+from scopes import SCOPES
 
 load_dotenv()
 
@@ -27,60 +28,6 @@ if not CLIENT_ID or not CLIENT_SECRET:
 PORT = 8090
 REDIRECT = "http://localhost"
 REDIRECT_URI = f"{REDIRECT}:{PORT}"  # Must match Twitch app
-SCOPES = [
-    "bits:read",
-    "channel:bot",
-    "channel:manage:broadcast",
-    "channel:manage:clips",
-    "channel:read:goals",
-    "channel:read:hype_train",
-    "channel:read:polls",
-    "channel:manage:polls",
-    "channel:read:predictions",
-    "channel:manage:predictions",
-    "channel:manage:raids",
-    "channel:read:redemptions",
-    "channel:read:subscriptions",
-    "channel:read:vips",
-    "channel:moderate",
-    "moderation:read",
-    "moderator:manage:announcements",
-    "moderator:manage:automod",
-    "moderator:read:automod_settings",
-    "moderator:manage:automod_settings",
-    "moderator:read:banned_users",
-    "moderator:manage:banned_users",
-    "moderator:read:blocked_terms",
-    "moderator:read:chat_messages",
-    "moderator:manage:blocked_terms",
-    "moderator:manage:chat_messages",
-    "moderator:read:chat_settings",
-    "moderator:manage:chat_settings",
-    "moderator:read:chatters",
-    "moderator:read:followers",
-    "moderator:read:guest_star",
-    "moderator:read:moderators",
-    "moderator:read:shoutouts",
-    "moderator:manage:shoutouts",
-    "moderator:read:suspicious_users",
-    "moderator:read:unban_requests",
-    "moderator:manage:unban_requests",
-    "moderator:read:vips",
-    "moderator:read:warnings",
-    "moderator:manage:warnings",
-    "user:bot",
-    "user:edit",
-    "user:read:chat",
-    "user:manage:chat_color",
-    "user:read:emotes",
-    "user:read:follows",
-    "user:read:moderated_channels",
-    "user:read:subscriptions",
-    "user:read:whispers",
-    "user:manage:whispers",
-    "user:write:chat",
-    "whispers:read"
-]
 TOKEN_FILE = "twitch_token.json"
 
 # ----------------------------
