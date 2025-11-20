@@ -1,0 +1,15 @@
+aiohttp>=3.11.15
+colorama>=0.4.6
+emoji>=2.14.1
+Flask>=3.1.0
+irc>=20.5.0
+millify>=0.1.1
+pandas>=2.2.3
+pillow>=11.2.1
+pre_commit_hooks>=5.0.0
+python-dateutil>=2.9.0.post0
+pytz>=2025.2
+requests>=2.32.3
+validators>=0.34.0
+websocket-client>=1.8.0
+websockets>=15.0.1

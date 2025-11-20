@@ -43,20 +43,20 @@
       with ps; [
         aiohttp
         colorama
-        irc
-        requests
-        validators
-        websockets
-        websocket-client
         emoji
-        pillow
-        python-dateutil
-        pre-commit-hooks
         flask
-        pandas
-        pytz
+        irc
         millify
         obs-websocket-py
+        pandas
+        pillow
+        pre-commit-hooks
+        python-dateutil
+        pytz
+        requests
+        validators
+        websocket-client
+        websockets
       ]);
   in {
     devShells.${system}.default = pkgs.mkShell {

@@ -1,14 +1,15 @@
 import os
 import requests
 import time
-from twitch_functions import get_headers, get_channel_id
+from twitch_functions import get_channel_id
+from twitch_auth import TwitchAuth
 
 BROADCASTER_USERNAME = (os.getenv("BROADCASTER_USERNAME"))
 MAX_SUBS = os.getenv("MAX_SUBS")
 UPDATE_INTERVAL_MINUTES = int(os.getenv("UPDATE_INTERVAL_MINUTES"))
-LINEAR = os.getenv("LINEAR")
 
 #TODO: Needs better names
+LINEAR = os.getenv("LINEAR")
 title0 = os.getenv("Title0")
 title1 = os.getenv("Title1")
 
@@ -28,9 +29,9 @@ def subs_logic(SUBS):
     
     return SUBS
 
-def update_title(channel_id: str, new_title: str):
+def update_title(auth: TwitchAuth ,channel_id: str, new_title: str):
     """Update the channel title using Twitch API."""
-    headers = get_headers()
+    headers = auth.get_headers()
     data = {"title": new_title}
     
     response = requests.patch(
