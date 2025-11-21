@@ -17,12 +17,12 @@ BROADCASTER_USERNAME = os.getenv("BROADCASTER_USERNAME")
 BOT_USERNAME = os.getenv("BOT_USERNAME")
 
 #Title variables
-MAX_SUBS = os.getenv("MAX_SUBS")
-#UPDATE_INTERVAL_MINUTES = int(os.getenv("UPDATE_INTERVAL_MINUTES"))
+MAX_SUBS = int(os.getenv("MAX_SUBS"))
+UPDATE_INTERVAL_MINUTES = int(os.getenv("UPDATE_INTERVAL_MINUTES"))
 BASE_SUBS = int(os.getenv("BASE_SUBS"))
 LINEAR = os.getenv("LINEAR")
-title0 = os.getenv("Title0")
-title1 = os.getenv("Title1")
+title = os.getenv("title")
+insert_after = int(os.getenv("insert_after"))
 
 def get_app_token(client_id: str, client_secret: str) -> str:
     url = "https://id.twitch.tv/oauth2/token"
@@ -161,50 +161,56 @@ async def process_messages(rate_per_second=1):
             await asyncio.sleep(interval)  # Wait before processing next message
 
 ######### Title Functions #########
-#
-#def subs_logic(SUBS):
-#    mult = os.getenv("BASE_MULT")
-#
-#    if SUBS == None:
-#        SUBS = BASE_SUBS
-#
-#    if LINEAR == True:
-#        SUBS += BASE_SUBS
-#    elif LINEAR == False:
-#        SUBS = (SUBS * mult) // 1
-#    return SUBS
-#
-#def update_title(auth: TwitchAuth ,channel_id: str, new_title: str):
-#    """Update the channel title using Twitch API."""
-#    headers = auth.get_headers()
-#    data = {"title": new_title}
-#
-#    response = requests.patch(
-#        f"https://api.twitch.tv/helix/channels?broadcaster_id={channel_id}",
-#        headers=headers,
-#        json=data
-#    )
-#    
-#    if response.status_code == 204:
-#        print("Title updated successfully!")
-#    else:
-#        print(f"Failed to update title ({response.status_code}): {response.text}")
-#
-#def update_title_loop():
-#    print("Fetching channel ID...")
-#    channel_id = get_channel_id(BROADCASTER_USERNAME)
-#    print(f"Channel ID for '{BROADCASTER_USERNAME}': {channel_id}")
-#    
-#    subs = BASE_SUBS
-#
-#    while True:
-#        print("Updating title...")
-#        print(subs)
-#        new_title = f"{title0} {subs} {title1}"  # Change to your desired title
-#        update_title(channel_id, new_title)
-#        print(f"Waiting {UPDATE_INTERVAL_MINUTES} minutes before next update...")
-#        time.sleep(UPDATE_INTERVAL_MINUTES * 15)
-#        subs += subs_logic(subs)
-#        if subs >= MAX_SUBS:
-#            subs == MAX_SUBS
-#            return
+
+def insertSubs(subs):
+    words = title.split()
+    words.insert(insert_after, str(subs))
+    new_title = " ".join(words)
+    return new_title
+
+def subs_logic(subs):
+    mult = os.getenv("BASE_MULT")
+
+    if subs == None:
+        subs = BASE_SUBS
+
+    if LINEAR == True:
+        subs += BASE_SUBS
+    elif LINEAR == False:
+        subs = (subs * mult) // 1
+    return subs
+
+def update_title(auth: TwitchAuth ,channel_id: str, new_title: str):
+    """Update the channel title using Twitch API."""
+    headers = auth.get_headers()
+    data = {"title": new_title}
+
+    response = requests.patch(
+        f"https://api.twitch.tv/helix/channels?broadcaster_id={channel_id}",
+        headers=headers,
+        json=data
+    )
+    
+    if response.status_code == 204:
+        print("Title updated successfully!")
+    else:
+        print(f"Failed to update title ({response.status_code}): {response.text}")
+
+def update_title_loop(auth):
+    print("Fetching channel ID...")
+    channel_id = get_channel_id(BROADCASTER_USERNAME)
+    print(f"Channel ID for '{BROADCASTER_USERNAME}': {channel_id}")
+    
+    subs = BASE_SUBS
+
+    while True:
+        print("Updating title...")
+        print(subs)
+        new_title = insertSubs(subs)
+        update_title(auth, channel_id, new_title)
+        print(f"Waiting {UPDATE_INTERVAL_MINUTES} minutes before next update...")
+        time.sleep(UPDATE_INTERVAL_MINUTES * 60)
+        subs += subs_logic(subs)
+        if subs >= MAX_SUBS:
+            subs == MAX_SUBS
+            return

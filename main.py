@@ -19,23 +19,23 @@ TWITCH_API_URL = "https://api.twitch.tv/helix/eventsub/subscriptions"
 BROADCASTER_ID = get_channel_id(BROADCASTER_USERNAME)
 auth = TwitchAuth(scopes=SCOPES, broadcaster_id=BROADCASTER_ID)
 
-#def main():
-#    #print(auth.get_headers())
-#    auth.get_valid_token(validate=True)
-#    #update_title_loop()
-#    #asyncio.run(main_chat())
-#    asyncio.run(twitch_listener(auth))
+def main():
+    #print(auth.get_headers())
+    auth.get_valid_token(validate=True)
+    #update_title_loop(auth)
+    #asyncio.run(main_chat())
+    #asyncio.run(twitch_listener(auth))
 
 
-async def main(auth):
-    consumer_task = asyncio.create_task(process_messages(rate_per_second=1))
-    listener_task = asyncio.create_task(twitch_listener(auth))
+#async def main(auth):
+    #consumer_task = asyncio.create_task(process_messages(rate_per_second=1))
+    #listener_task = asyncio.create_task(twitch_listener(auth))
     
-    await asyncio.gather(listener_task, consumer_task)
+    #await asyncio.gather(listener_task, consumer_task)
 
 # Run with your auth object
 # asyncio.run(main(auth))
 
 
 if __name__ == "__main__":
-    asyncio.run(main(auth))
+    main()

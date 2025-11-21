@@ -1,45 +1,41 @@
-#If you need to install python, you can install it from the Microsoft store:
-#Instructions here:
-#https://realpython.com/installing-python/#windows-how-to-install-python-from-the-microsoft-store
-
-#Next:
-
-#To get a client ID and secret go to:
-#https://dev.twitch.tv/console/apps/create
-#Name it whatever you want, I selected AJAPInterface
-#OAuth Redirect URLs must be:
-#http://localhost:8090
-#Category: Website Integration
-#Client Type: Confidential
-
-TWITCH_CLIENT_ID=ClientIDHere
-TWITCH_CLIENT_SECRET=ClientSecretHere
-
-#After that, run twitch_generate_token.py, authorize in the browser window that pops up
-#That should populate a twitch_token.json within the same directory
-#If it doesn't, DM me
+TWITCH_CLIENT_ID=your_client_id
+TWITCH_CLIENT_SECRET=your_client_secret
 
 #Change this to your username:
-BROADCASTER_USERNAME=your_user_here
+BROADCASTER_USERNAME=aj_hyper_bit
+#Change this to your bot's username (can be the same as broadcaster):
+BOT_USERNAME=aj_hyper_bit
+
+############### TITLE VARIABLES ###############
 
 #If you want this to update some time other than every 30 min, change this:
 UPDATE_INTERVAL_MINUTES=30
 
-#To set your title elements:
-#If your title was:
-#YOLK OR TREAT DAY 1/2 - 20 SUBS = YOUR OWN DRAWN YOLK [!PP !WOOD !MILKIES !MOBILE ]
-#You'd want "YOLK OR TREAT DAY 1/2 - " without the quotes, this part is title 0
-#"SUBS = YOUR OWN DRAWN YOLK [!PP !WOOD !MILKIES !MOBILE ]" This part would be title1, again without the quotes
-#This is what you want the start of your title to be
-Title0=YOLK OR TREAT DAY 1/2 -
-#This is the end
-Title1=SUBS = YOUR OWN DRAWN YOLK [!PP !WOOD !MILKIES !MOBILE ]
+#To update the title, you need to add a digit to insert after, so with an example:
+#YOLK OR TREAT DAY 1/2 - 5 SUBS = YOUR OWN DRAWN YOLK [!PP !WOOD !MILKIES !MOBILE ]
+#If you want to update the 5, you need to count how many space delimited words, so after 6 words you want the number there.
+#Note: do not include the number inside the title variable
+title="YOLK OR TREAT DAY 1/2 -  SUBS = YOUR OWN DRAWN YOLK [!PP !WOOD !MILKIES !MOBILE ]"
+insert_after=6
 
 #Number of subs you want to start with
 BASE_SUBS=5
 
+#Maximum number of subs you want to make the title change to
+MAX_SUBS=100
+
 #True or False
-LINEAR=True 
+LINEAR=True
 
 #Next option only does anything if Linear = False
 BASE_MULT=2 #Multiple of number of subs you want to add to the counter (2 = *2, 4 = *4, etc)
+
+################ OBS VARIABLES ################
+
+#Not currently working. If you want a project that implements these,
+#find DougDoug's github and refer to his code
+WEBSOCKET_HOST=localhost
+WEBSOCKET_PORT=4455
+WEBSOCKET_PASSWORD=TwitchChat9
+
+################################################################################################

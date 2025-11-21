@@ -8,7 +8,7 @@ SCOPES = [
     # Needed to read bits #
     "bits:read",
     #######################
-    #"channel:manage:broadcast",
+    "channel:manage:broadcast",
     #"channel:manage:clips",
     #"channel:read:goals",
     #"channel:read:hype_train",
@@ -56,4 +56,6 @@ SCOPES = [
     #"user:read:whispers",
     #"user:manage:whispers",
     #"user:write:chat"
+
+    #user:edit:broadcast
 ]

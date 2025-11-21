@@ -1,6 +1,6 @@
 To download:
 ```
-git clone https://github.com/ajhyperbit/Twitch-Title-Change.git
+git clone https://github.com/ajhyperbit/Twitch-Projects.git
 ```
 
 If you need to install python, you can install it from the Microsoft store if you are on Windows:
@@ -17,8 +17,7 @@ http://localhost:8090
 Category: Website Integration
 Client Type: Confidential
 
-After that, run twitch_generate_token.py, authorize in the browser window that pops up
-That should populate a twitch_token.json within the same directory
-
-Some of these instructions are repeated in .envexample
-But there are more instructions in there too
+After that, copy the .envexample into a .env, change all the relevant variables
+Once you do that, run main.py and. Authorize the connection to your account in the browser window that pops up.
+That should populate a twitch_token.json within the same directory (if it has number like `twitch_token-124213.json` that is fine and intended.)
+Variables are mostly documented in the .envexample
